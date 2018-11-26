@@ -6,6 +6,7 @@
 /* decide tercile/quintile/decile based on the min and max size of the cross section */
 data workable2; set &input;
 if &n1<=n<&n2;
+if &neutral~='';
 run;
 
 %let rankvar1 = bm;
@@ -129,7 +130,7 @@ ods tagsets.tablesonlylatex close;
 proc sort data=agret1; by country; run;
 data region; set region;
 keep region country;
-proc sort data=region; by country; 
+proc sort data=region nodup; by country; 
 run;
 
 data agret1; merge agret1(in=a) region(in=b);
@@ -138,13 +139,6 @@ world = 'world';
 run;
 
 /**********************************************************/
-
-
-data agret1; set agret1;
-if rhs~=.;
-if rhs>0;
-run;
-/*********************************************************************/
 /* scale within a country */
 proc sort data=agret1;
 by country mthyr;
@@ -180,10 +174,10 @@ bm4 = be4/mc;
 run;
 
 
-x md "C:\TEMP\displace\20181121";
-x cd "C:\TEMP\displace\20181121";
+x md "C:\TEMP\displace\20181122";
+x cd "C:\TEMP\displace\20181122";
 
-
+/*
 %bmeffect(tem, ret_us, country, ew, country_ew);
 
 %bmeffect(tem, ret_us, country, lagmv_us, country_vw);
@@ -195,4 +189,4 @@ x cd "C:\TEMP\displace\20181121";
 %bmeffect(tem, ret_us, world, ew, world_ew);
 
 %bmeffect(tem, ret_us, world, lagmv_us, world_vw);
-
+*/
