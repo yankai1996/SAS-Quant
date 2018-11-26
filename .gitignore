@@ -1,3 +1,5 @@
 **/*.pdf
 
 **/*.xlsx
+
+**/sas.sty
