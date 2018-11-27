@@ -74,14 +74,22 @@ run;
 */
 /*******************************************/
 /* use June value weights /
-/* make lagmv_us to be the same as mv_us for coding convenience
+/* get lagmv_us
 /*******************************************/
 proc sort; by code portyear;
 run;
+
+proc sort data=mvjune;
+by code portyear;
+run;
+data mvjune; set mvjune; by code;
+lagmv_us = lag(mv_us);
+if first.code then lagmv_us=.;
+run;
+
 data agret1; merge agret1(in=a) mvjune(in=b);
 by code portyear;
 if a and b;
-lagmv_us = mv_us;
 run;
 
 /*%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=lagmv_us, type=winsor, pctl=1 99);*/
