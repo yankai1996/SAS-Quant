@@ -136,12 +136,15 @@ run;
 /***************** Make RD ******************************/
 %makeRD();
 proc sort data=agret1;
-by code country portyear;
+by code portyear;
 run;
 data rd1; set rd;
 keep code country portyear RD1 RD2 RD3;
-data agret1; merge agret1 rd;
-by code country portyear;
+data agret1; merge agret1 rd1;
+by code portyear;
+if RD1=0 then RD1=.;
+if RD2=0 then RD2=.;
+if RD3=0 then RD3=.;
 run;
 
 
