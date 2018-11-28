@@ -120,15 +120,20 @@ run;
 
 %macro mergeRegion(input, output);
 
-proc sort data=&input; by country; run;
-data region; set region;
-keep region country;
+data temp&input; set &input;
+proc sort data=temp&input; by country; 
+run;
+
 proc sort data=region; by country; 
 run;
 
-data &output; merge &input region;
+data &output; merge temp&input region;
 by country;
 world = 'world';
+run;
+
+proc datasets library=work noprint;
+delete temp&input;
 run;
 
 %mend mergeRegion;
