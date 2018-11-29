@@ -237,12 +237,12 @@ run;
 %zscore(tem, country, portyear, signal1, signal2, signal3);
 
 %zeffect(zscore, ret_us, country, ew, &denominator._country_ew_outp, &denominator._country_ew);
-/*%zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_ew_outp, &denominator._country_vw);
+%zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_ew_outp, &denominator._country_vw);
 %zeffect(zscore, ret_us, region, ew, &denominator._region_ew_outp, &denominator._region_ew);
 %zeffect(zscore, ret_us, region, lagmv_us, &denominator._region_vw_outp,  &denominator._region_vw);
 %zeffect(zscore, ret_us, world, ew, &denominator._world_ew_outp, &denominator._world_ew);
 %zeffect(zscore, ret_us, world, lagmv_us, &denominator._world_vw_outp, &denominator._world_vw);
-*/
+
 %mend zscoretest;
 
 %zscoretest(MC);
