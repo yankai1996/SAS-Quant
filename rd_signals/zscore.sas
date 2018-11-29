@@ -37,17 +37,7 @@ run;
 /* -------------------  One Way Sprd------------------------------------ */
 
 %macro sprd(input, n1, n2, ret, neutral, timevar, weighting, Ngrp, rhs);
-/*
-%let input=zscore;
-%let n1=4;
-%let n2=50;
-%let ret=ret_us;
-%let neutral=country;
-%let timevar=portyear;
-%let weighting=ew;
-%let Ngrp=3;
-%let rhs=z;
-*/
+
 /* decide tercile/quintile/decile based on the min and max size of the cross section */
 data workable2; set &input;
 if &n1<=n<&n2;
@@ -131,14 +121,8 @@ run;
 %mend NWavg;
 
 
-%macro zeffect(input, ret, sort, weighting, output, outstat);
-/*
-%let input=zscore;
-%let ret=ret_us;
-%let sort=country;
-%let weighting1=ew;
-%let output=outp;
-*/
+%macro zeffect(input, ret, sort, weighting, output);
+
 %sprd(&input, 4, 50, &ret, &sort, portyear, &weighting, 3, z);
 %sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 5, z);
 
@@ -161,18 +145,18 @@ slope=z;
 keep &sort portyear slope;
 run;
 
-data &output; merge sprd coef;
+data &output._outp; merge sprd coef;
 by &sort portyear;
 proc sort; by &sort;
 run;
 
-%NWavg(&output, &sort, 0, &outstat);
+%NWavg(&output._outp, &sort, 0, &output);
 
-data &outstat; set &outstat;
+data &output; set &output;
 proc sort; by &sort parameter;
 run;
 
-ods tagsets.tablesonlylatex file="&outstat..tex"  (notop nobot) stylesheet="sas.sty"(url="sas"); proc print data=&outstat; run; quit;
+ods tagsets.tablesonlylatex file="&output..tex"  (notop nobot) stylesheet="sas.sty"(url="sas"); proc print data=&output; run; quit;
 ods tagsets.tablesonlylatex close;
 
 %mend zeffect;
@@ -236,12 +220,12 @@ run;
 
 %zscore(tem, country, portyear, signal1, signal2, signal3);
 
-%zeffect(zscore, ret_us, country, ew, &denominator._country_ew_outp, &denominator._country_ew);
-%zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_ew_outp, &denominator._country_vw);
-%zeffect(zscore, ret_us, region, ew, &denominator._region_ew_outp, &denominator._region_ew);
-%zeffect(zscore, ret_us, region, lagmv_us, &denominator._region_vw_outp,  &denominator._region_vw);
-%zeffect(zscore, ret_us, world, ew, &denominator._world_ew_outp, &denominator._world_ew);
-%zeffect(zscore, ret_us, world, lagmv_us, &denominator._world_vw_outp, &denominator._world_vw);
+%zeffect(zscore, ret_us, country, ew, &denominator._country_ew);
+%zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_vw);
+%zeffect(zscore, ret_us, region, ew, &denominator._region_ew);
+%zeffect(zscore, ret_us, region, lagmv_us, &denominator._region_vw);
+%zeffect(zscore, ret_us, world, ew, &denominator._world_ew);
+%zeffect(zscore, ret_us, world, lagmv_us, &denominator._world_vw);
 
 %mend zscoretest;
 
