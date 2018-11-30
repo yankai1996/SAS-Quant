@@ -29,7 +29,8 @@ by &neutral &timevar;
 z1=(r1-mu1)/sigma1;
 z2=(r2-mu2)/sigma2;
 z3=(r3-mu3)/sigma3;
-z=mean(z1, z2, z3);
+*z=mean(z1, z2, z3);
+z=coalesce(z1, mean(z1,z3), mean(z1, z2, z3));
 drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma3 sigma2 z1 z2 z3;
 if z~=.;
 run;
@@ -224,8 +225,12 @@ run;
 %zscore(tem, country, portyear, signal1, signal2, signal3);
 %zeffect(zscore, ret_us, country, ew, &denominator._country_ew);
 %zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_vw);
+
+%zscore(tem, region, portyear, signal1, signal2, signal3);
 %zeffect(zscore, ret_us, region, ew, &denominator._region_ew);
 %zeffect(zscore, ret_us, region, lagmv_us, &denominator._region_vw);
+
+%zscore(tem, world, portyear, signal1, signal2, signal3);
 %zeffect(zscore, ret_us, world, ew, &denominator._world_ew);
 %zeffect(zscore, ret_us, world, lagmv_us, &denominator._world_vw);
 
