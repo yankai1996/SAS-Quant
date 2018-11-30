@@ -768,19 +768,23 @@
 
 \newcommand*{\RD}{SL}
 
-\thispagestyle{fancy}\fancyhead[LO]{z(RD/\RD), Yan Kai}
+\thispagestyle{fancy}\fancyhead[LO]{coalesce, z(RD/\RD), Yan Kai}
 \fancyhead[RO]{Nov 30, 2018}
 
 \newcommand{\code}{\texttt}
 \newcommand*{\Commonpath}{20181130}
 
-We use the $z$-score as the $rhs$ to do the one-way-sort. The $z$-score is based on three signals, each $signal_i = RD_i / SL $, where 
+We use the $z$-score as the $rhs$ to do the one-way-sort. The $z$-score is based on three signals, each $z_i = z(signal_i) = z(RD_i / SL) $, where 
 $$
 \begin{aligned}
 & RD_1 = RD_t \\
-& RD_2 = RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2} + 0.4 RD_{t-3} + 0.2 RD_{t-4} \\
-& RD_3 = RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2}
+& RD_2 = (RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2} + 0.4 RD_{t-3} + 0.2 RD_{t-4})/3 \\
+& RD_3 = (RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2})/2.4
 \end{aligned}
+$$
+and
+$$
+z = coalesce(z_1, mean(z_1, z_3), mean(z_1, z_2, z_3))
 $$
 
 We do it monthly and at country, region, or world level (i.e. \code{by \&neutral \&timevar;}). In each group, there are $n$ firms having a $z$-score. We filter the firms according to this $n$ and apply the 3 or 5 bucket rule.
