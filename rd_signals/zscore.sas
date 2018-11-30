@@ -11,13 +11,14 @@ proc rank data=&input out=rank;
 var &signal1 &signal2 &signal3;
 by &neutral &timevar;
 ranks r1 r2 r3;
+
 run;
 
 proc means data=rank noprint;
 options nolabel; 
 by &neutral &timevar;
 var r1 r2 r3;
-output out=rankmean mean=mu1 mu2 mu3 std=sigma1 sigma2 sigma3;
+output out=rankmean mean=mu1 mu2 mu3 std=sigma1 sigma2 sigma3 n=n;
 run;
 data rankmean; set rankmean;
 drop _type_ _freq_;
@@ -30,6 +31,7 @@ z2=(r2-mu2)/sigma2;
 z3=(r3-mu3)/sigma3;
 z=mean(z1, z2, z3);
 drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma3 sigma2 z1 z2 z3;
+if z~=.;
 run;
 
 %mend zscore;
@@ -203,11 +205,12 @@ run;
 
 data tem; set agret;
 if n>&nobs;
+drop n;
 run;
 
 
-x md "C:\TEMP\displace\20181129";
-x cd "C:\TEMP\displace\20181129";
+x md "C:\TEMP\displace\20181130";
+x cd "C:\TEMP\displace\20181130";
 
 
 %macro zscoretest(denominator);
@@ -219,7 +222,6 @@ signal3=RD3/&denominator;
 run;
 
 %zscore(tem, country, portyear, signal1, signal2, signal3);
-
 %zeffect(zscore, ret_us, country, ew, &denominator._country_ew);
 %zeffect(zscore, ret_us, country, lagmv_us, &denominator._country_vw);
 %zeffect(zscore, ret_us, region, ew, &denominator._region_ew);
