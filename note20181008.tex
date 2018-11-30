@@ -11,8 +11,7 @@
 \usepackage{lscape}
 \usepackage{comment}
 \usepackage{setspace}
-\usepackage{trackchanges}
-% \usepackage{lib/trackchanges}
+\usepackage{lib/trackchanges}
 %\usepackage[table]{xcolor}
 \RequirePackage{geometry}
 \RequirePackage{longtable}
@@ -767,30 +766,45 @@
 \begin{document}
 
 
-\newcommand*{\RD}{RD2}
+\newcommand*{\RD}{SL}
 
-\thispagestyle{fancy}\fancyhead[LO]{\RD, Yan Kai}
-\fancyhead[RO]{Nov 26, 2018}
+\thispagestyle{fancy}\fancyhead[LO]{z(RD/\RD), Yan Kai}
+\fancyhead[RO]{Nov 30, 2018}
 
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20181130}
 
-\newcommand*{\Commonpath}{20181126}
+We use the $z$-score as the $rhs$ to do the one-way-sort. The $z$-score is based on three signals, each $signal_i = RD_i / SL $, where 
+$$
+\begin{aligned}
+& RD_1 = RD_t \\
+& RD_2 = RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2} + 0.4 RD_{t-3} + 0.2 RD_{t-4} \\
+& RD_3 = RD_t + 0.8 RD_{t-1} + 0.6 RD_{t-2}
+\end{aligned}
+$$
 
-country\_vw
+We do it monthly and at country, region, or world level (i.e. \code{by \&neutral \&timevar;}). In each group, there are $n$ firms having a $z$-score. We filter the firms according to this $n$ and apply the 3 or 5 bucket rule.
+
+We do the equal-weighted as well as the value-weighted, where the valued weight $lagmv\_us$ is from every Dec-end market capitalization.
+
+We calculate the spread and the slope.
+
+1. country\_ew
 \input{./\Commonpath/\RD _country_ew}
 
-country\_vw
+2. country\_vw
 \input{./\Commonpath/\RD _country_vw}
 
-region\_ew
+3. region\_ew
 \input{./\Commonpath/\RD _region_ew}
 
-region\_vw
+4. region\_vw
 \input{./\Commonpath/\RD _region_vw}
 
-world\_ew
+5. world\_ew
 \input{./\Commonpath/\RD _world_ew}
 
-world\_vw
+6. world\_vw
 \input{./\Commonpath/\RD _world_vw}
 
 \end{document}
