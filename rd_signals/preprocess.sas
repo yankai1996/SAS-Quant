@@ -144,6 +144,7 @@ run;
 
 data rd; set &input;
 keep code country portyear rd;
+if RD=0 then RD=.;;
 proc sort data=rd nodup; 
 by code portyear;
 run; 
@@ -182,9 +183,6 @@ data rd1; set rd;
 keep code portyear RD1 RD2 RD3;
 data &output; merge &input rd1;
 by code portyear;
-if RD1=0 then RD1=.;
-if RD2=0 then RD2=.;
-if RD3=0 then RD3=.;
 run;
 
 proc datasets library=work noprint;
@@ -192,5 +190,3 @@ delete rd1;
 run;
 
 %mend makeRD;
-
-
