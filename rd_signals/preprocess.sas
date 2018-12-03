@@ -143,7 +143,7 @@ run;
 %macro makeRD(input, output);
 
 data rd; set &input;
-keep code country portyear rd;
+keep code portyear rd;
 if RD=0 then RD=.;;
 proc sort data=rd nodup; 
 by code portyear;
@@ -152,10 +152,10 @@ run;
 %do i=0 %to 3;
 %let j=%eval(&i+1);
 data rd; set rd;
-by code country;
+by code;
 lag0_rd=rd;
 lag&j._rd=lag(lag&i._rd);
-if first.country then lag&j._rd=.;
+if first.code then lag&j._rd=.;
 run;
 %end;
 
@@ -177,7 +177,7 @@ run;
 %end;
 
 proc sort data=&input;
-by code country portyear;
+by code portyear;
 run;
 data rd1; set rd;
 keep code portyear RD1 RD2 RD3;
