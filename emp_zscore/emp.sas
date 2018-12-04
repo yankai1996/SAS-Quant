@@ -31,7 +31,7 @@ z2=(r2-mu2)/sigma2;
 z3=(r3-mu3)/sigma3;
 z=mean(z1, z2, z3);
 *z=coalesce(z1, mean(z1,z3), mean(z1, z2, z3));
-drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma3 sigma2 n1 n2 n3;
+drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma3 sigma2;
 if z~=.;
 run;
 
@@ -70,12 +70,14 @@ r = r + 1;
 proc sort; by &neutral &timevar r;
 run;
 
+option nonotes;
 proc means data=rank noprint;
 var &rhs &ret;
 by &neutral &timevar r;
 weight &weighting;
 output out=port mean=&rhs.bar &ret.bar;
 run;
+option notes;
 
 data bot; set port; if r=1;
 bot1=&rhs.bar;
@@ -137,8 +139,10 @@ run;
 
 %macro zeffect(input, ret, sort, weighting, output);
 
-%sprd(&input, 4, 50, &ret, &sort, portyear, &weighting, 3, z);
-%sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 5, z);
+%let z = z3;
+
+%sprd(&input, 4, 50, &ret, &sort, portyear, &weighting, 3, &z);
+%sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 5, &z);
 
 data sprd; set sprd3 sprd5;
 proc sort; by &sort portyear;
@@ -149,13 +153,13 @@ run;
 
 option nonotes;
 proc reg data=&input noprint outest=coef edf;
-model &ret=z;
+model &ret=&z;
 by &sort portyear;
 weight &weighting;
 run;
 option notes;
 data coef; set coef;
-slope=z;
+slope=&z;
 keep &sort portyear slope;
 run;
 
@@ -221,8 +225,8 @@ drop n;
 run;
 
 
-x md "C:\TEMP\displace\20181204\mean";
-x cd "C:\TEMP\displace\20181204\mean";
+x md "C:\TEMP\displace\20181204\SGA";
+x cd "C:\TEMP\displace\20181204\SGA";
 
 
 %zscore(tem, country, portyear, signal1, signal2, signal3);
