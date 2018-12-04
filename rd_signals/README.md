@@ -2,7 +2,7 @@
 
 ## Signals 
 
-We construct 3 signals, and $signal_i = RD_i/c$, where $c$ can be MC(market cap), TA(total assests), be4, SL(Sales), and $RD_i$ is defined as:
+We construct 3 signals, each $signal_i = RD_i/c$, where $c$ can be MC(market cap), TA(total assests), be4, SL(Sales), and $RD_i$ is defined as:
 $$
 \begin{aligned}
 & RD_1 = RD_t \\
