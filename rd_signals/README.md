@@ -15,11 +15,9 @@ $$
 
 Let $x$ be the signal variable and $r$ be the vector of ranks, $r_i = rank(x_i)$. Then the $z$-score of the ranks of $x$ is given by $z(x) = (r-\mu_r)/\sigma_r$, where $\mu_r$ and $\sigma_r$ are the cross-sectional mean and standard deviation of r.
 
-For three signals, let $z_j = z(signal_j)$, then we have 2 ways to define the final $z$-score:
-
-1. $z = mean(z_1, z_2, z_3)$
-2. $z = coalesce(z_1, mean(z_1, z_3), mean(z_1, z_2, z_3))$
-
-
-
+For three signals, let $z_j = z(signal_j)$, then we have:
+$$
+z = mean(z_1, z_2, z_3)
+$$
 Finally, we use this $z$-score as the `rhs` to do one-way-sort at country, region, or world level with equal-weighted or value-weighted method to calculate the spread and slope.
+
