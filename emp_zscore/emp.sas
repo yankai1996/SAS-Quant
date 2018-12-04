@@ -139,7 +139,7 @@ run;
 
 %macro zeffect(input, ret, sort, weighting, output);
 
-%let z = z3;
+%let z = z;
 
 %sprd(&input, 4, 50, &ret, &sort, portyear, &weighting, 3, &z);
 %sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 5, &z);
@@ -225,8 +225,8 @@ drop n;
 run;
 
 
-x md "C:\TEMP\displace\20181204\SGA";
-x cd "C:\TEMP\displace\20181204\SGA";
+x md "C:\TEMP\displace\20181204\mean";
+x cd "C:\TEMP\displace\20181204\mean";
 
 
 %zscore(tem, country, portyear, signal1, signal2, signal3);
