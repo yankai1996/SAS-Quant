@@ -7,7 +7,7 @@ Trim or winsorize macro
 *byvar = subsetting variables to winsorize/trim on;
 ****************************************/
   
-%macro winsor(dsetin=, dsetout=, byvar=none, vars=, type=winsor, pctl=l 99);
+%macro winsor(dsetin=, dsetout=, byvar=none, vars=, type=winsor, pctl=1 99);
   
 %if &dsetout = %then %let dsetout = &dsetin;
      
