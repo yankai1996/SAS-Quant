@@ -247,7 +247,6 @@ x md "C:\TEMP\displace\20181205";
 x cd "C:\TEMP\displace\20181205";
 */
 
-%zscore(tem, country, portyear, EMP1, EMP2, EMP3, EMP);
 
 %macro zscoretest(denominator);
 
@@ -260,16 +259,19 @@ signal2=RD2/&denominator;
 signal3=RD3/&denominator;
 run;
 
+%zscore(tem, country, portyear, EMP1, EMP2, EMP3, EMP);
 %zscore(zscore, country, portyear, signal1, signal2, signal3, RD);
 %zcombine(zscore, country, portyear);
 %zeffect(zscore, ret_us, country, ew, country_ew);
 %zeffect(zscore, ret_us, country, lagmv_us, country_vw);
 
+%zscore(tem, region, portyear, EMP1, EMP2, EMP3, EMP);
 %zscore(zscore, region, portyear, signal1, signal2, signal3, RD);
 %zcombine(zscore, region, portyear);
 %zeffect(zscore, ret_us, region, ew, region_ew);
 %zeffect(zscore, ret_us, region, lagmv_us, region_vw);
 
+%zscore(tem, world, portyear, EMP1, EMP2, EMP3, EMP);
 %zscore(zscore, world, portyear, signal1, signal2, signal3, RD);
 %zcombine(zscore, world, portyear);
 %zeffect(zscore, ret_us, world, ew, world_ew);
