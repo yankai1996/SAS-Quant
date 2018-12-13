@@ -95,7 +95,7 @@ rhs = rdc3;
 if country='US' then ret_us=ret;
 /* if rhs ne .;
 if ret_us ne .;
-
+*/
 
 if p_us_updated>=p_us_10;
 if ret>-1 and ret<10;
@@ -197,7 +197,7 @@ by code portyear;
 if a and b;
 run;
 
-/*%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=lagmv_us, type=winsor, pctl=1 99);*/
+%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=lagmv_us, type=winsor, pctl=1 99);
 
 %mend;
 
