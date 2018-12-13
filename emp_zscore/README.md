@@ -49,3 +49,21 @@ Finally, we have
 $$
 z = mean(z_{RD}, -z_{EMP})
 $$
+
+
+
+# Filters
+
+In `preprocess.sas`, we active three filters to get better results.
+
+1. `if p_us_updated>=p_us_10;`
+
+2. `if ret>-1 and ret<10;`
+
+   `if ret_us>-1 and ret_us<10;`
+
+3. `%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=ret_us, type=winsor, pctl=1 99);`
+
+
+
+### 
