@@ -51,7 +51,7 @@ run;
 %mend makeRD;
 
 
-%macro makeEMP(input, output);
+%macro makeEMP(input, output, absolute);
 
 data emp; set &input;
 keep code portyear emp;
@@ -60,11 +60,20 @@ proc sort data=emp nodup;
 by code portyear;
 run;
 
+%if &absolute %then %do;
+data emp; set emp; 
+by code;
+lag_emp=lag(emp);
+if first.code then lag_emp=.;
+delta_emp=abs(emp-lag_emp);
+%end;
+%else %do;
 data emp; set emp; 
 by code;
 lag_emp=lag(emp);
 if first.code then lag_emp=.;
 delta_emp=emp-lag_emp;
+%end;
 proc sort data=emp;
 by code portyear;
 run;

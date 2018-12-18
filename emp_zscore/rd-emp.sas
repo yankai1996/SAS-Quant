@@ -210,7 +210,7 @@ ods tagsets.tablesonlylatex close;
 
 %makeRD(agret1, agret1);
 
-%makeEMP(agret1, agret1);
+%makeEMP(agret1, agret1, 0);
 
 /*********************************************************************/
 /* scale within a country */
