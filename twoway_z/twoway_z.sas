@@ -105,8 +105,7 @@ run;
 
 %macro twowaytest(denominator);
 
-dm 'log;clear;'
-
+dm 'log;clear;';
 x md "C:\TEMP\displace\20181214\&denominator";
 x cd "C:\TEMP\displace\20181214\&denominator";
 
