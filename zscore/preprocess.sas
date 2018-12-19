@@ -51,7 +51,7 @@ run;
 %mend makeRD;
 
 
-%macro makeEMP(input, output, absolute);
+%macro makeEMP(input, output, absolute=0);
 
 data emp; set &input;
 keep code portyear emp;
