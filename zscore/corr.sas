@@ -79,49 +79,7 @@ ods tagsets.tablesonlylatex close;
 
 
 /*************** Start from here *************************/
-
-%let rhs=rdc3;
-%let lb=0;
-%let ub=1000000;
-%let nobs=15;
-
-%makerhs(&rhs, &lb, &ub, &nobs);
-
-%mergeRegion(agret1, agret1);
-
-%makeRD(agret1, agret1);
-
-%makeEMP(agret1, agret1);
-
-/*********************************************************************/
-/* scale within a country */
-proc sort data=agret1;
-by country mthyr;
-run;
-proc means data=agret1 noprint; by country mthyr;
-var lagmv_us; output out=meanmv mean=mvbar sum=mvsum n=n;
-run;
-
-data agret; merge agret1(in=a) meanmv(in=b);
-by country mthyr;
-if a and b;
-ew = 1;
-/* mvport = lagmv_us/mvsum;
-if rhs~=.;
-if rhs>0;
-*/
-mvport = mvsum/lagmv_us;
-portyear_old = portyear;
-portyear = mthyr;
-/* if portyear_old>1985;  */
-if ret_us~=.;
-drop _type_ _freq_;
-run;
-
-data tem; set agret;
-if n>&nobs;
-drop n;
-run;
+%preprocess();
 
 
 %macro zcorrtest(denominator);
