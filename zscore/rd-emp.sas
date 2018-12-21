@@ -51,6 +51,9 @@ run;
 
 data &input; set &input;
 z = mean(zRD, -zEMP);
+* z = zRD-zEMP;
+* z = coalesce(zRD-zEMP, zRD);
+* z = coalesce(zRD-zEMP, -zEMP);
 run;
 
 proc means data=&input noprint;
