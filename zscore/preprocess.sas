@@ -132,7 +132,7 @@ run;
 
 data &output; merge &input emp;
 by code portyear;
-EMP1=delta_emp/EMP;
+EMP1=delta_emp/lag_emp;
 EMP2=delta_emp/COG;
 EMP3=delta_emp/SGA;
 drop lag_emp delta_emp;
