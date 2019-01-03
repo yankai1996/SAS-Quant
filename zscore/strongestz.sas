@@ -1,7 +1,7 @@
 
 /* -------------------  Z Score ------------------------------------ */
 
-%macro zscore(input, neutral, timevar, signal1, signal2, signal3, label);
+%macro zRD(input, neutral, timevar, signal1, signal2, signal3, label);
 
 proc sort data=&input;
 by &neutral &timevar;
@@ -29,20 +29,25 @@ z1=(r1-mu1)/sigma1;
 z2=(r2-mu2)/sigma2;
 z3=(r3-mu3)/sigma3;
 z&label=mean(z1, z2, z3);
-drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma3 sigma2 z1 z2 z3;
+drop r1 r2 r3 mu1 mu2 mu3 sigma1 sigma2 sigma3;
 run;
 option label;
 
-%mend zscore;
+%mend zRD;
 
-%macro strongestz(input, neutral, timevar);
 
-proc sort data=&input;
+%macro zEMP(input, neutral, timevar, signal);
+
+data zscore; set &input;
+if &signal=0 then &signal=.;
+run;
+
+proc sort data=zscore;
 by &neutral &timevar;
 run;
 
-proc rank data=&input out=rank;
-var EMP3;
+proc rank data=zscore out=rank;
+var &signal;
 by &neutral &timevar;
 ranks r;
 run;
@@ -51,7 +56,7 @@ proc means data=rank noprint;
 options nolabel; 
 by &neutral &timevar;
 var r;
-output out=rankmean mean=mu std=sigma;
+output out=rankmean mean=mu std=sigma n=n;
 run;
 data rankmean; set rankmean;
 drop _type_ _freq_;
@@ -59,25 +64,32 @@ run;
 
 data zscore; merge rank rankmean;
 by &neutral &timevar;
-zEMP=(r-mu)/sigma;
-z = mean(zRD, -zEMP);
+zEMP = (r-mu)/sigma;
 drop r mu sigma;
 run;
-option label;
+
+%mend zEMP;
 
 
-proc means data=zscore noprint;
+
+%macro zcombine(input, neutral, timevar);
+
+data &input; set &input;
+z = mean(zRD, -zEMP);
+run;
+
+proc means data=&input noprint;
 by &neutral &timevar;
 var z;
 output out=zn n=n;
 run;
-data zscore; merge zscore zn;
+data &input; merge &input zn;
 by &neutral &timevar;
 drop _type_ _freq_;
 if z~=.;
 run;
 
-%mend strongestz;
+%mend;
 
 /* -------------------  One Way Sprd------------------------------------ */
 
@@ -168,12 +180,13 @@ run;
 %mend NWavg;
 
 
-%macro zeffect(input, ret, sort, weighting, output);
+%macro zeffect(input, ret, sort, weighting, output, z);
 
-%sprd(&input, 4, 50, &ret, &sort, portyear, &weighting, 3, z);
-%sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 5, z);
+%sprd(&input, 11, 30, &ret, &sort, portyear, &weighting, 3, &z);
+%sprd(&input, 31, 50, &ret, &sort, portyear, &weighting, 5, &z);
+%sprd(&input, 51, 100000, &ret, &sort, portyear, &weighting, 10, &z);
 
-data sprd; set sprd3 sprd5;
+data sprd; set sprd3 sprd5 sprd10;
 proc sort; by &sort portyear;
 run;
 
@@ -182,13 +195,13 @@ run;
 
 option nonotes;
 proc reg data=&input noprint outest=coef edf;
-model &ret=z;
+model &ret=&z;
 by &sort portyear;
 weight &weighting;
 run;
 option notes;
 data coef; set coef;
-slope=z;
+slope=&z;
 keep &sort portyear slope;
 run;
 
@@ -211,31 +224,53 @@ ods tagsets.tablesonlylatex close;
 
 
 /*************** Start from here *************************/
-%preprocess()
+%preprocess();
 
+
+%let denominator=MC;
 
 dm 'log;clear;';
-x md "C:\TEMP\displace\20181227\strongest";
-x cd "C:\TEMP\displace\20181227\strongest";
+x md "C:\TEMP\displace\20190102\one-way";
+x cd "C:\TEMP\displace\20190102\one-way";
 
 data tem; set tem;
-signal1=RD1/MC;
-signal2=RD2/MC;
-signal3=RD3/MC;
+signal1=RD1/&denominator;
+signal2=RD2/&denominator;
+signal3=RD3/&denominator;
 run;
 
-%zscore(tem, country, portyear, signal1, signal2, signal3, RD);
-%strongestz(zscore, country, portyear);
-%zeffect(zscore, ret_us, country, ew, country_ew);
-%zeffect(zscore, ret_us, country, lagmv_us, country_vw);
 
-%zscore(tem, region, portyear, signal1, signal2, signal3, RD);
-%strongestz(zscore, region, portyear);
-%zeffect(zscore, ret_us, region, ew, region_ew);
-%zeffect(zscore, ret_us, region, lagmv_us, region_vw);
+%zRD(tem, country, portyear, signal1, signal2, signal3, RD);
+%zEMP(zscore, country, portyear, EMP3);
+%zcombine(zscore, country, portyear);
+%zeffect(zscore, ret_us, country, ew, country_ew, z);
+%zeffect(zscore, ret_us, country, lagmv_us, country_vw, z);
 
-%zscore(tem, world, portyear, signal1, signal2, signal3, RD);
-%strongestz(zscore, world, portyear);
-%zeffect(zscore, ret_us, world, ew, world_ew);
-%zeffect(zscore, ret_us, world, lagmv_us, world_vw);
+%zRD(tem, region, portyear, signal1, signal2, signal3, RD);
+%zEMP(zscore, region, portyear, EMP3);
+%zcombine(zscore, region, portyear);
+%zeffect(zscore, ret_us, region, ew, region_ew, z);
+%zeffect(zscore, ret_us, region, lagmv_us, region_vw), z;
 
+%zRD(tem, world, portyear, signal1, signal2, signal3, RD);
+%zEMP(zscore, world, portyear, EMP3);
+%zcombine(zscore, world, portyear);
+%zeffect(zscore, ret_us, world, ew, world_ew, z);
+%zeffect(zscore, ret_us, world, lagmv_us, world_vw, z);
+
+
+
+x md "C:\TEMP\displace\20190103\SGA";
+x cd "C:\TEMP\displace\20190103\SGA";
+
+%zEMP(tem, country, portyear, EMP3);
+%zeffect(zscore, ret_us, country, ew, country_ew, zEMP);
+%zeffect(zscore, ret_us, country, lagmv_us, country_vw, zEMP);
+
+%zEMP(tem, region, portyear, EMP3);
+%zeffect(zscore, ret_us, region, ew, region_ew, zEMP);
+%zeffect(zscore, ret_us, region, lagmv_us, region_vw, zEMP);
+
+%zEMP(tem, world, portyear, EMP3);
+%zeffect(zscore, ret_us, world, ew, world_ew, zEMP);
+%zeffect(zscore, ret_us, world, lagmv_us, world_vw, zEMP);
