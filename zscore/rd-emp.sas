@@ -206,8 +206,10 @@ ods tagsets.tablesonlylatex close;
 
 %macro zscoretest(denominator);
 
-x md "C:\TEMP\displace\20181205\&denominator";
-x cd "C:\TEMP\displace\20181205\&denominator";
+dm 'log;clear;';
+%let pwd = "C:\TEMP\displace\20181205\&denominator";
+x md &pwd;
+x cd &pwd;
 
 data zscore; set zscore;
 signal1=RD1/&denominator;
@@ -233,7 +235,6 @@ run;
 %zeffect(zscore, ret_us, world, ew, world_ew);
 %zeffect(zscore, ret_us, world, lagmv_us, world_vw);
 
-dm 'log;clear;';
 %mend zscoretest;
 
 

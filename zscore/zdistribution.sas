@@ -96,8 +96,9 @@ ods tagsets.tablesonlylatex close;
 %macro ztest(denominator);
 
 dm 'log;clear;';
-x md "C:\TEMP\displace\20181219\&denominator";
-x cd "C:\TEMP\displace\20181219\&denominator";
+%let pwd = "C:\TEMP\displace\20181219\&denominator";
+x md &pwd;
+x cd &pwd;
 
 data tem; set tem;
 signal1=RD1/&denominator;
