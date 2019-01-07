@@ -84,8 +84,10 @@ ods tagsets.tablesonlylatex close;
 
 %macro zcorrtest(denominator);
 
-x md "C:\TEMP\displace\20181212\&denominator";
-x cd "C:\TEMP\displace\20181212\&denominator";
+dm 'log;clear;';
+%let pwd = "C:\TEMP\displace\20181212\&denominator";
+x md &pwd;
+x cd &pwd;
 
 data tem; set tem;
 signal1=RD1/&denominator;
@@ -106,7 +108,6 @@ run;
 %zscore(zscore, world, portyear, signal1, signal2, signal3, RD);
 %corrZ(zscore, world);
 
-dm 'log;clear;';
 %mend zcorrtest;
 
 
