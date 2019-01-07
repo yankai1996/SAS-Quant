@@ -233,8 +233,9 @@ ods tagsets.tablesonlylatex close;
 
 %macro EMPtest(EMPi);
 
-x md "C:\TEMP\displace\20190104\&EMPi";
-x cd "C:\TEMP\displace\20190104\&EMPi";
+%let pwd = "C:\TEMP\displace\20190104\&EMPi";
+x md &pwd;
+x cd &pwd;
 
 %zEMP(tem, country, portyear, &EMPi);
 %zeffect(zscore, ret_us, country, ew, country_ew, zEMP);
@@ -260,8 +261,9 @@ x cd "C:\TEMP\displace\20190104\&EMPi";
 %macro RDtest(denominator);
 
 dm 'log;clear;';
-x md "C:\TEMP\displace\20190104\&denominator";
-x cd "C:\TEMP\displace\20190104\&denominator";
+%let pwd = "C:\TEMP\displace\20190104\&denominator";
+x md &pwd;
+x cd &pwd;
 
 data zscore; set tem;
 signal1=RD1/&denominator;
@@ -294,8 +296,9 @@ run;
 
 %macro EMPmeantest();
 
-x md "C:\TEMP\displace\20190104\EMPmean";
-x cd "C:\TEMP\displace\20190104\EMPmean";
+%let pwd = "C:\TEMP\displace\20190104\EMPmean";
+x md &pwd;
+x cd &pwd;
 
 %zRD(tem, country, portyear, EMP1, EMP2, EMP3, EMP);
 %zeffect(zscore, ret_us, country, ew, country_ew, zEMP);
@@ -317,8 +320,9 @@ x cd "C:\TEMP\displace\20190104\EMPmean";
 %macro combotest(denominator);
 
 dm 'log;clear;';
-x md "C:\TEMP\displace\20190104\combo&denominator";
-x cd "C:\TEMP\displace\20190104\combo&denominator";
+%let pwd = "C:\TEMP\displace\20190104\combo&denominator";
+x md &pwd;
+x cd &pwd;
 
 data zscore; set tem;
 signal1=RD1/&denominator;
