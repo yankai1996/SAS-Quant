@@ -225,8 +225,9 @@ drop n;
 run;
 
 
-x md "C:\TEMP\displace\20181204\mean";
-x cd "C:\TEMP\displace\20181204\mean";
+%let pwd = "C:\TEMP\displace\20181204\mean";
+x md &pwd;
+x cd &pwd;
 
 
 %zscore(tem, country, portyear, signal1, signal2, signal3);
