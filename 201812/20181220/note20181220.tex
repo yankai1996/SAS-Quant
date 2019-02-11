@@ -1,0 +1,58 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$z_{EMP}$ (EMP, SL, TA), Yan Kai}
+\fancyhead[RO]{Dec 20, 2018}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20181220/mean2}
+
+We want to test some alternative divisors of EMP. 
+
+We do the one-way-sort using the $z$-score, which is defined as the following:
+$$
+\begin{aligned}
+& \Delta EMP = EMP_t - EMP_{t-1} \\
+& z_1 = z(\frac{\Delta EMP}{EMP}) \\
+& z_2 = z(\frac{\Delta EMP}{SL}) \\
+& z_3 = z(\frac{\Delta EMP}{TA}) \\
+& z_{EMP} = mean(z_1, z_2, z_3) \\
+\end{aligned}
+$$
+
+We do it monthly and at country, region, or world level (i.e. \code{by \&neutral \&timevar;}). In each group, there are $n$ firms having a $z$-score. We filter the firms according to this $n$ and apply the 3 or 5 bucket rule.
+
+We do the equal-weighted as well as the value-weighted, where the valued weight $lagmv\_us$ is from every Dec-end market capitalization.
+
+We calculate the spread and the slope.
+
+Filters (all):
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{\%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=ret\_us, type=winsor, pctl=1 99);}
+
+1. country\_ew
+\input{./\Commonpath/country_ew}
+
+2. country\_vw
+\input{./\Commonpath/country_vw}
+
+3. region\_ew
+\input{./\Commonpath/region_ew}
+
+4. region\_vw
+\input{./\Commonpath/region_vw}
+
+5. world\_ew
+\input{./\Commonpath/world_ew}
+
+6. world\_vw
+\input{./\Commonpath/world_vw}
+
+\end{document}
