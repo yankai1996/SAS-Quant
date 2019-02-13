@@ -1,0 +1,62 @@
+
+\input{./lib/noteformat}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{EMP distribution, Yan Kai}
+\fancyhead[RO]{Dec 27, 2018}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20181227/distribution}
+
+This is the distribution of EMP.
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{\%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=ret\_us, type=winsor, pctl=1 99);}
+
+
+Distribution of $\Delta EMP/EMP$ \\
+values out of (-1, 1) are excluded
+
+\includegraphics{./\Commonpath/EMP}
+
+
+\newpage
+Distribution of $\Delta EMP/COG$ \\
+values out of (-0.01, 0.01) are excluded
+
+\includegraphics{./\Commonpath/COG}
+
+\newpage
+Distribution of $\Delta EMP/SGA$ \\
+values out of (-0.01, 0.01) are excluded
+
+\includegraphics{./\Commonpath/SGA}
+
+\newpage
+Distribution of $z(\Delta EMP/EMP)$
+
+\includegraphics{./\Commonpath/z1}
+
+\newpage
+Distribution of $z(\Delta EMP/COG)$
+
+\includegraphics{./\Commonpath/z2}
+
+\newpage
+Distribution of $z(\Delta EMP/SGA)$
+
+\includegraphics{./\Commonpath/z3}
+
+\newpage
+Distribution of $z_{EMP}$
+
+\includegraphics{./\Commonpath/zEMP}
+
+
+\end{document}
