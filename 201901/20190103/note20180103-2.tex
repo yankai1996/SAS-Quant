@@ -1,0 +1,24 @@
+
+\input{./lib/noteformat}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$\Delta EMP/lag(EMP)$ distirbution, Yan Kai}
+\fancyhead[RO]{Jan 03, 2018}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190103}
+
+This is the distribution of $\Delta EMP/lag(EMP)$
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+
+\input{./\Commonpath/lagEMP_stat}
+
+
+\end{document}

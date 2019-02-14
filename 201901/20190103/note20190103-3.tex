@@ -1,0 +1,67 @@
+
+\input{./lib/noteformat}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$mean(z_{RD}, -z_{EMP})$ , Yan Kai}
+\fancyhead[RO]{Jan 03, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190102/one-way}
+
+
+We do one-way-sort using the $z$-score:
+$$
+\begin{aligned}
+& z_{RD} = mean(z_1, z_2, z_3) \\
+& z_i = z(RD_i/MC) \\
+& RD_1 = RD_t \\
+& RD_2 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2} + 0.4RD_{t-3} + 0.2RD_{t-4})/3 \\
+& RD_3 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2})/2.4 
+& \\
+% & z_{EMP} = z(\frac{\Delta EMP}{lag(EMP)}) \\
+& z_{EMP} = z(\frac{\Delta EMP}{SGA}) \\
+& \Delta EMP = EMP_t - EMP_{t-1}
+\end{aligned}
+$$
+
+Finally, we have
+$$
+z = mean(z_{RD}, -z_{EMP})
+$$
+
+
+We do it monthly and at country, region, or world level (i.e. \code{by \&neutral \&timevar;}). In each group, there are $n$ firms having a $z$-score. We filter the firms according to this $n$ and apply the 3/5/10 bucket rule.
+
+We do the equal-weighted as well as the value-weighted, where the valued weight $lagmv\_us$ is from every Dec-end market capitalization.
+
+We calculate the spread and the slope.
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{\%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=ret\_us, type=winsor, pctl=1 99);}
+
+
+1. country\_ew
+\input{./\Commonpath/country_ew}
+
+2. country\_vw
+\input{./\Commonpath/country_vw}
+
+3. region\_ew
+\input{./\Commonpath/region_ew}
+
+4. region\_vw
+\input{./\Commonpath/region_vw}
+
+5. world\_ew
+\input{./\Commonpath/world_ew}
+
+6. world\_vw
+\input{./\Commonpath/world_vw}
+
+\end{document}
