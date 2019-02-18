@@ -1,0 +1,56 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$z(bm4)$, Yan Kai}
+\fancyhead[RO]{Jan 07, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190107/bm4/winsorized}
+
+We winsorize the signal and apply 3/5/10 rules.
+
+We do one-way-sort using the $z$-score:
+$$
+\begin{aligned}
+& bm4 = be4/MC \\
+& z = z(bm4)
+\end{aligned}
+$$
+
+Filters (all):
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{\%winsor(dsetin=tem, dsetout=tem, byvar=portyear country, vars=bm4, type=winsor, pctl=1 99);} \\
+
+We add another filter:
+
+\code{\%winsor(dsetin=tem, dsetout=tem, byvar=country, vars=ret\_us, type=winsor, pctl=1 99);}
+
+\small
+
+% 1. country\_ew
+% \input{./\Commonpath/country_ew}
+
+% 2. country\_vw
+% \input{./\Commonpath/country_vw}
+
+% 3. region\_ew
+% \input{./\Commonpath/region_ew}
+
+% 4. region\_vw
+% \input{./\Commonpath/region_vw}
+
+5. world\_ew
+\input{./\Commonpath/world_ew}
+
+6. world\_vw
+\input{./\Commonpath/world_vw}
+
+
+\end{document}

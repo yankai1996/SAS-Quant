@@ -1,0 +1,24 @@
+
+\input{./lib/noteformat}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{abs EMP distirbution, Yan Kai}
+\fancyhead[RO]{Jan 07, 2018}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190107}
+
+This is the distribution of absolute EMP signals with 0s.
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+
+\input{./\Commonpath/distribution}
+
+
+\end{document}
