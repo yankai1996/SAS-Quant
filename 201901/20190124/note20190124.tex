@@ -1,0 +1,82 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$z_{EMP}$, Yan Kai}
+\fancyhead[RO]{Jan 24, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190124/zEMP}
+
+
+% % We only use the data after 201206. 
+% We use COG\_US. 
+% We only use data up to 201006
+
+% % We exclude US. 
+% We apply 3/5/10 rules.
+
+% We investigate the two-way-spread over $z_{RD/MC}$ and $z_{\Delta EMP/COG}$ at world level, with equal weighted and value weighted. 
+
+% % We use the absolute value of $\Delta EMP/COG$, including 0, to do $5\times5$.
+
+Calcluating the $z$-score:
+$$
+\begin{aligned}
+% & z_{RD} = mean(z_1, z_2, z_3) \\
+% & z_i = z(RD_i/MC) \\
+% & RD_1 = RD_t \\
+% & RD_2 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2} + 0.4RD_{t-3} + 0.2RD_{t-4})/3 \\
+% & RD_3 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2})/2.4 
+% & \\
+& z_{EMP} = z(|\frac{\Delta EMP}{lag(EMP)}|) \\
+& \Delta EMP = EMP_t - EMP_{t-1}
+\end{aligned}
+$$
+
+% Finally, we have
+% $$
+% z = z_{RD} + z_{EMP}
+% $$
+
+After getting the zscores, we use only the NYSE firms (with nyse=1) to find breakpoints: 10\%, 20\%, ... 90\%.
+
+Finally we find the spread between the 90 above and 10 below.
+
+Filters (all):
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+
+
+\small
+
+1. US\_ew
+\input{./\Commonpath/US_ew}
+
+2. US\_vw
+\input{./\Commonpath/US_vw}
+
+% 1. country\_ew
+% \input{./\Commonpath/country_ew}
+
+% 2. country\_vw
+% \input{./\Commonpath/country_vw}
+
+% 3. region\_ew
+% \input{./\Commonpath/region_ew}
+
+% 4. region\_vw
+% \input{./\Commonpath/region_vw}
+
+% 5. world\_ew
+% \input{./\Commonpath/world_ew}
+
+% 6. world\_vw
+% \input{./\Commonpath/world_vw}
+
+\end{document}
