@@ -1,0 +1,33 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{names and obs, Yan Kai}
+\fancyhead[RO]{Feb 1, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190201}
+
+A+B+C+D = \\
+agret0, US, mthyr <= 201206 \\
+agret0, xUS, mthyr <= 201306 \\
+agret1\_US \\
+agret1\_xUS
+
+
+C+D+E+F = new DSWS/agret0
+
+A+B+C: mthyr <= 201206
+
+D+E+F: mthyr > 201206
+
+
+
+\input{./\Commonpath/stat}
+
+
+
+\end{document}
