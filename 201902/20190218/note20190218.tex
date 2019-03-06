@@ -1,0 +1,68 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{$z_{RD}+z_{EMP}$, US-one-way-decile-nyse, Yan Kai}
+\fancyhead[RO]{Feb 18, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190218/US-one-way-decile-nyse}
+
+
+We use the data `Compustat\&CRSP merged'.
+
+% We apply 3/5/10 rules.
+We use the NYSE 10\% and 90\% breakpoints. 
+
+
+
+We do one-way-sort using $z$-score:
+$$
+\begin{aligned}
+& z_{RD} = mean(z_1, z_2, z_3) \\
+& z_i = z(RD_i/MC) \\
+& RD_1 = RD_t \\
+& RD_2 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2} + 0.4RD_{t-3} + 0.2RD_{t-4})/3 \\
+& RD_3 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2})/2.4 
+& \\
+& z_{EMP} = z(|\frac{\Delta EMP}{COG}|) \\
+& \Delta EMP = EMP_t - EMP_{t-1}
+\end{aligned}
+$$
+
+Finally, we have
+$$
+z = z_{RD} + z_{EMP}
+$$
+
+
+Filters (all):
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+
+
+\small
+
+
+1. country\_ew
+\input{./\Commonpath/US_ew}
+
+2. country\_vw
+\input{./\Commonpath/US_vw}
+
+
+% If we only look at the spread after 198206:
+
+% 3. country\_ew\_198207
+% \input{./\Commonpath/country_ew_198207}
+
+% 4. country\_vw\_198207
+% \input{./\Commonpath/country_vw_198207}
+
+
+\end{document}
