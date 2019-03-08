@@ -1,0 +1,64 @@
+% 
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{replaceUS-twoway-developed, Yan Kai}
+\fancyhead[RO]{Feb 25, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190225/replaceUS-twoway-developed}
+
+
+We use the data \code{db.a4} and \code{db.mvdec\_all}. The COG\_US is calculated by the exchange rate nius/ni from the new data WSDS20190215.
+We remove the US data from \code{a4}, and add in the new US data from `Compustat\&CRSP merged'.
+
+We use the 16 developed countries.
+% We apply 3/5/10 rules.
+% We use the NYSE 10\% and 90\% breakpoints. 
+
+
+
+We do two-way-sort using $z$-score:
+$$
+\begin{aligned}
+& z_{RD} = mean(z_1, z_2, z_3) \\
+& z_i = z(RD_i/MC) \\
+& RD_1 = RD_t \\
+& RD_2 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2} + 0.4RD_{t-3} + 0.2RD_{t-4})/3 \\
+& RD_3 = (RD_t + 0.8RD_{t-1} + 0.6RD_{t-2})/2.4 
+& \\
+% & z_{EMP} = z(|\frac{\Delta EMP}{lag(COG\_US)}|) \\
+& z_{EMP} = z(\frac{\Delta EMP}{lag(COG\_US)}) \\
+& \Delta EMP = EMP_t - EMP_{t-1}
+\end{aligned}
+$$
+
+% Finally, we have
+% $$
+% z = z_{RD} + z_{EMP}
+% $$
+
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{if cog>0 and RD>0 and MC>0;} \\
+\code{\%winsor(dsetin=tem, dsetout=tem, byvar=portyear country, vars=lagmv\_us, type=winsor, pctl=1 99);}
+
+\small
+
+
+1. world\_ew
+\input{./\Commonpath/world_ew}
+
+2. world\_vw
+\input{./\Commonpath/world_vw}
+
+
+
+\end{document}
