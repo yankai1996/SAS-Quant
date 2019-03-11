@@ -1,0 +1,52 @@
+% 
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{bm-developed, Yan Kai}
+\fancyhead[RO]{Feb 26, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190226/bm-developed}
+
+
+We use the data \code{db.a5} and \code{db.mvdec\_all}. 
+
+We use the 16 developed countries.
+We apply 3/5/10 rules.
+% We use the NYSE 10\% and 90\% breakpoints. 
+
+The defination of bm4:\\
+\code{
+if dit=. then dit=0;\\
+be1 = eq-pf+dit;\\
+be2 = cm+dit;\\
+be3 = ta-tl-pf+dit;\\
+be4 = coalesce(be1,be2,be3);\\
+bm4 = be4/mc;\\
+}
+
+We use the $z$-score of bm4 to do one-way-sort.
+
+
+Filters:
+
+\code{if p\_us\_updated>=p\_us\_10;} \\
+\code{if ret>-1 and ret<10;} \\
+\code{if ret\_us>-1 and ret\_us<10;} \\
+\code{\%winsor(dsetin=tem, dsetout=tem, byvar=portyear country, vars=lagmv\_us, type=winsor, pctl=1 99);}
+
+\small
+
+
+1. world\_ew
+\input{./\Commonpath/world_ew}
+
+2. world\_vw
+\input{./\Commonpath/world_vw}
+
+
+
+\end{document}
