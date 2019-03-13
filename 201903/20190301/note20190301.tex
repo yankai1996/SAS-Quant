@@ -1,0 +1,45 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{regression country, Yan Kai}
+\fancyhead[RO]{Mar 01, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190301/regression}
+
+Country\_vw return regression results.
+
+model: $lhs = a + b*rhs$
+
+1. bm\_top33\_rhs4\_country\\
+lhs = bm return \\
+rhs = top33 rhs4 return \\
+
+\input{./\Commonpath/bm_top33_rhs4_country}
+
+
+2. top33\_rhs4\_bm\_country\\
+lhs = top33 rhs4 return \\
+rhs = bm return \\
+
+\input{./\Commonpath/top33_rhs4_bm_country}
+
+
+3. bm\_benchmark\_rhs4\_country\\
+lhs = bm return \\
+rhs = benchmark rhs4 return \\
+
+\input{./\Commonpath/bm_benchmark_rhs4_country}
+
+
+4. benchmark\_rhs4\_bm\_country\\
+lhs = benchmark rhs4 return \\
+rhs = bm return \\
+
+\input{./\Commonpath/benchmark_rhs4_bm_country}
+
+\end{document}
