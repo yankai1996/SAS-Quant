@@ -5,8 +5,6 @@ libname nnnDS 'V:\data_for_kai\WSDS20190215';
 data mvdec; set nnnDS.mvdec; run;
 
 
-/* sprd country level */
-
 data final; set nnnDS.agret0;
 COG_US = COGS*NIUS/NI;
 SGA_US = SGA*NIUS/NI;
@@ -81,62 +79,6 @@ option label;
 %mend zRD;
 
 
-%macro zEMP(input, neutral, timevar, signal, abs);
-
-data zscore; set &input;
-%if &abs>0 %then %do;
-&signal = abs(&signal);
-%end;
-proc sort data=zscore;
-by &neutral &timevar;
-run;
-
-proc rank data=zscore out=rank;
-var &signal;
-by &neutral &timevar;
-ranks r;
-run;
-
-proc means data=rank noprint;
-options nolabel; 
-by &neutral &timevar;
-var r;
-output out=rankmean mean=mu std=sigma n=n;
-run;
-data rankmean; set rankmean;
-drop _type_ _freq_;
-run;
-
-data zscore; merge rank rankmean;
-by &neutral &timevar;
-zEMP = (r-mu)/sigma;
-drop r mu sigma;
-run;
-
-%mend zEMP;
-
-
-%macro zn(input, neutral, timevar);
-
-data &input; set &input;
-z = zRD+zEMP;
-drop n;
-run;
-
-proc means data=&input noprint;
-by &neutral &timevar;
-var z;
-output out=zn n=n;
-run;
-data &input; merge &input zn;
-by &neutral &timevar;
-drop _type_ _freq_;
-if z~=.;
-run;
-
-%mend zn;
-
-
 /*************** Start from here *************************/
 
 %let rhs=rdc3;
@@ -150,7 +92,7 @@ run;
 
 %makeRD(agret1, agret1);
 
-%makeEMP(agret1, agret1, cog_us, sga_us);
+* %makeEMP(agret1, agret1, cog_us, sga_us);
 
 /*********************************************************************/
 /* scale within a country */
@@ -180,7 +122,6 @@ run;
 data tem; set agret;
 if n>&nobs;
 drop n;
-*if lagcog_us>0;
 if RD>0;
 if MC>0;
 run;
@@ -196,13 +137,9 @@ x cd &pwd;
 libname pwd &pwd;
 
 data test; set tem;
-world = "world";
 signal1=RD1/MC;
 signal2=RD2/MC;
 signal3=RD3/MC;
-*if signal1~=. and EMP2~=.;
-*if signal1~=.;
-*if EMP2~=.;
 run;
 
 
