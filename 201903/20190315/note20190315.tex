@@ -1,0 +1,52 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{pvgo, Yan Kai}
+\fancyhead[RO]{Mar 15, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190315}
+
+\code{
+	mktret=vwmktret; \\
+	if vwmktret<=0 and ewmktret>0 then mktret=ewmktret; \\
+	else if vwmktret<=0 and mdmktret>0 then mktret=mdmktret;
+% aip = proje/mktret;
+% pvgo = (mc3 - aip) / mc3;
+}
+
+We use market returns from old data ABCD or new data nnnDS.
+
+1. ABCD, truncate 10\%
+
+\code{	
+\%winsor(dsetin=testdata, dsetout=testdata2, byvar=globe, vars=\&rhs, type=delete, pctl=10 90);
+}
+
+\input{./\Commonpath/outputABCD10}
+
+
+2. nnnDS, truncate 15\%
+
+\code{	
+\%winsor(dsetin=testdata, dsetout=testdata2, byvar=globe, vars=\&rhs, type=delete, pctl=15 85);
+}
+
+\input{./\Commonpath/outputNnnDS15}
+
+
+3. nnnDS, truncate 20\%
+
+\code{	
+\%winsor(dsetin=testdata, dsetout=testdata2, byvar=globe, vars=\&rhs, type=delete, pctl=20 80);
+}
+
+\input{./\Commonpath/outputNnnDS20}
+
+
+
+\end{document}
