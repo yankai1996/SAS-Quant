@@ -1,0 +1,35 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{outstat, Yan Kai}
+\fancyhead[RO]{Apr 01, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190401}
+
+Data: data\_for\_kai/20190329
+
+PE=MC/CSH/EPS;
+
+To make the number visible, we let PE=PE/100.
+
+Counting the results with $t>1.7$.
+
+obs: 4k case, 5k case
+
+type: winsor 2.5\%, truncate 2.5\%
+
+by: country portyear, country
+
+\input{./\Commonpath/outstat}
+
+
+\code{corr.sas7bdat}: country-by-country correlations between this new PE and the old PE
+
+\code{pe\_augment.sas7bdat}: results of augmented PE
+
+\end{document}
