@@ -1,0 +1,38 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{outstat, Yan Kai}
+\fancyhead[RO]{Apr 10, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190410}
+
+We use the new data.
+
+PE=MC/NI;
+
+return filters:
+
+1. \code{
+\%winsor(dsetin=agret1, dsetout=agret1, byvar=country, vars=lagmv\_us, type=winsor, pctl=1 99);
+}
+
+2. \code{
+\%winsor(dsetin=agret1, dsetout=agret, byvar=\&wsby, vars=RD MC, type=\&wstype, pctl=1 99);
+} 
+\&wsby: portyear, country portyear \\
+\&wstype: winsor, delete
+
+
+
+The best results are also in k4\_winsor\_portyear.sas7bdat, with ID 3222, 3224, 3226.
+
+\input{./\Commonpath/best}
+
+
+
+\end{document}
