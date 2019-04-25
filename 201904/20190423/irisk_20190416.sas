@@ -18,10 +18,9 @@ ret=ri_lc/lag(ri_lc)-1;
 if first.dscd then ret=.;
 run;
 
-/*
+
 data ag19; set nnnDS.agret0;
-portyear=year+1;
-keep code country portyear mc;
+keep code country portyear;
 proc sort nodup; by code portyear;
 run;
 proc sql;
@@ -35,7 +34,7 @@ if country in ("AU", "BD", "CH", "CN", "FN", "FR", "GR", "HK", "IN", "IS",
 "IT", "JP", "KO", "MY","SD", "SG", "SW", "TA", "TK", "UK", "US");
 proc sort; by code portyear;
 run;
-*/
+
 
 data code_country; set ag19;
 keep code country;
@@ -76,25 +75,25 @@ run;
 data test; merge test vwmktret;
 by country date;
 if ret~=. & vwmktret~=.;
-keep code portyear ret vwmktret;
+keep code country portyear ret vwmktret;
 proc sort; by code portyear;
 run;
 
 proc reg data=test noprint;
 model ret=vwmktret;
-by code portyear;
+by code portyear country;
 output out=residual r=residual;
 run;
 
 proc means data=residual noprint;
-by code portyear;
+by code portyear country;
 var residual;
 output out=irisk std=irisk;
 run;
 
 data daily.irisk_company; set irisk; 
 label irisk=" ";
-keep code portyear irisk;
+keep code country portyear irisk;
 run;
 
 
@@ -291,7 +290,7 @@ pf=pref;
 dit=tax;
 cm=ce;
 eq=se;
-keep code country year pf dit eq cm ta tl MC portyear;
+keep code year pf dit eq cm ta tl MC portyear;
 proc sort nodup; by code year;
 run;
 
@@ -303,17 +302,6 @@ be1 = eq-pf+dit;
 be2 = cm+dit;
 be3 = ta-tl-pf+dit;
 be4 = coalesce(be1, be2, be3);
-run;
-
-proc sql;
-	create table be4 as
-	select b.country as country, a.*
-	from be4 as a
-	left join db.ctycode as b on a.country=b.cty;
-quit;
-data be4; set be4;
-if country in ("AU", "BD", "CH", "CN", "FN", "FR", "GR", "HK", "IN", "IS", 
-"IT", "JP", "KO", "MY","SD", "SG", "SW", "TA", "TK", "UK", "US");
 if be4~=. & MC~=.;
 keep country code portyear be4 MC;
 proc sort; by code portyear;
@@ -362,3 +350,8 @@ keep country portyear pbsprd;
 run;
 
 data daily.pbsprd; set pbsprd; run;
+
+
+
+
+
