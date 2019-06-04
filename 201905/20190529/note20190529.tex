@@ -1,0 +1,36 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{PE, Yan Kai}
+\fancyhead[RO]{May 29, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190529}
+
+
+PE=MC/NI;
+
+LHS data is \code{4k-obs/winsor1-portyear}.
+
+\code{
+pe=coalesce(old, new);
+if 5<pe<40;
+}
+
+The results of retsprd improves a lot.
+
+\input{./\Commonpath/out1}
+
+
+Then we apply \\
+\code{if -1<\&lhs<1;}
+
+\input{./\Commonpath/out2}
+
+
+
+\end{document}
