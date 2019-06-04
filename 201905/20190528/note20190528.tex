@@ -1,0 +1,30 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{PE, Yan Kai}
+\fancyhead[RO]{May 28, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190528}
+
+
+PE=MC/NI;
+
+LHS data is \code{4k-obs/winsor1-portyear}
+
+It seems that the only way to improve slope results is to limit lhs between (-1, 1). (There are some slope outliers that 1 < |slpoe| < 5 , but |retsprd| < 1 always, so this has no affect on the result of retsprd.)
+
+\input{./\Commonpath/out1}
+
+
+We tried to limit PE sprd. It seems the lower bound should be no more than 5, and the upper bound should >= 40. This methond can adjust retsprd results, but slope dropped again. The following results are ``\code{if 5<pe<40;}''.
+
+\input{./\Commonpath/out2}
+
+
+
+\end{document}
