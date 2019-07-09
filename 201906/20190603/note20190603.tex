@@ -1,0 +1,35 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{Big loop, Yan Kai}
+\fancyhead[RO]{June 3, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190603}
+
+The big loop tests old and new PVGO2 and PE.
+Currently we set no threshold on rhs and lhs.
+
+PE\_new=MC/NI;\\
+PE=coalesce(PE\_old, PE\_new);\\
+PVGO2=PVGO2\_new;
+
+if PE<5 or PE>40 then PE=.;
+
+1. k4\_truncate\_country\_portyear
+
+\input{./\Commonpath/out1}
+
+
+1. k4\_winsor\_country\_portyear
+
+\input{./\Commonpath/out2}
+
+
+
+
+\end{document}
