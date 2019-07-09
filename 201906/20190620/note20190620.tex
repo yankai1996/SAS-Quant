@@ -1,0 +1,34 @@
+
+\input{./lib/noteformat}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+
+\thispagestyle{fancy}\fancyhead[LO]{Fixed effect, Yan Kai}
+\fancyhead[RO]{June 21, 2019}
+
+\newcommand{\code}{\texttt}
+\newcommand*{\Commonpath}{20190621}
+
+
+PE=MC/NI;\\
+PE belongs to [-250, 250].
+
+PVGO and PE spread is 75-25.
+
+PE=coalesce(PE\_old, PE\_new);\\
+PVGO2=PVGO2\_new;
+
+LHS: k4\_winsor\_country\_portyear
+
+
+\%winsor(dsetin=testdata, dsetout=testdata2, byvar=portyear, vars=\&lhs, type=delete, pctl=10 90);\\
+\%winsor(dsetin=testdata2, dsetout=testdata2, byvar=portyear, vars=pvgo2, type=delete, pctl=5 95);\\
+\%winsor(dsetin=testdata2, dsetout=testdata2, byvar=globe, vars=pe, type=delete, pctl=10 90);\\
+
+
+\input{./\Commonpath/final}
+
+
+\end{document}
